@@ -41,8 +41,26 @@ const userRegister=asyncHandler( async (req,res)=>{
 })
 
 const userLogin = asyncHandler( async (req,res)=>{
-     res.status(201).json({message:"Login User"})
-    console.log("Login User")
+      const  {username,password}=req.body
+      if(!username || !password){
+        res.status(400);
+        throw new Error ("All the fields must be entered")
+      }
+      const userAvailable= await User.findOne({username})
+      if(!userAvailable){
+        res.status(401);
+        throw new Error ("Username not found")
+      }
+      const correctPassword= await bcrypt.compare(password,userAvailable.password);
+      
+      if(!correctPassword){
+        res.status(401);
+        throw new Error ("Password Incorrect");
+      }else{
+        res.status(201).json({message:"Login Successfull",username:userAvailable.username,id:userAvailable._id})
+      }
+
+    
 })
 
 const currentUser = asyncHandler( async (req,res)=>{
