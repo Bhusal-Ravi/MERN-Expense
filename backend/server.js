@@ -3,8 +3,12 @@ const dotenv= require("dotenv").config()
 const app = express()
 const errorHandler=require("./middleware/errorHandler")
 const connectDb = require("./config/dbConnection")
+const cors=require('cors');
 
-
+app.use(cors({
+    origin: "http://localhost:5173", 
+                 
+}));
 
 
 

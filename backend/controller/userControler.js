@@ -3,6 +3,7 @@ const dotenv=require("dotenv").config();
 const asyncHandler=require("express-async-handler")
 const User=require("../models/userModel")
 const bcrypt=require("bcrypt")
+const  jwt= require("jsonwebtoken")
 
 
 const userRegister=asyncHandler( async (req,res)=>{
@@ -46,19 +47,21 @@ const userLogin = asyncHandler( async (req,res)=>{
         res.status(400);
         throw new Error ("All the fields must be entered")
       }
-      const userAvailable= await User.findOne({username})
-      if(!userAvailable){
+      const userAvailable= await  User.findOne({username})
+       if (!userAvailable) {
         res.status(401);
-        throw new Error ("Username not found")
-      }
-      const correctPassword= await bcrypt.compare(password,userAvailable.password);
+        throw new Error("Wrong Username or Password")
+    }
+    
+    const correctPassword = await bcrypt.compare(password, userAvailable.password);
+    
+    if (!correctPassword) {
+        res.status(401);
+        throw new Error("Wrong Username or Password")
+    }
       
-      if(!correctPassword){
-        res.status(401);
-        throw new Error ("Password Incorrect");
-      }else{
         res.status(201).json({message:"Login Successfull",username:userAvailable.username,id:userAvailable._id})
-      }
+      
 
     
 })

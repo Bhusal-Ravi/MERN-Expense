@@ -18,11 +18,18 @@ const errorHandler = (err,req,res,next)=>{
             })
             
             break;
+               case constants.UNAUTHORIZED_ERROR:
+            res.json({
+                title: 'Unauthorized',
+                message: err.message,
+            })
+            break;
               case constants.SERVER_ERROR:
             res.json({
                 title:'Server Error',
                 message: err.message,
             })
+             break;
             
            
             
