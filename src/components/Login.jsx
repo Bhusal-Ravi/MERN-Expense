@@ -8,6 +8,7 @@ function Login() {
     const [backendError, setBackendError] = useState('');
 
 
+
     const createAccount = () => {
         navigate('/register')
     }
@@ -29,7 +30,15 @@ function Login() {
                 setBackendError(result.message)
             } else {
                 console.log('Login Success', result)
+                console.log(result.token)
+                localStorage.setItem('token', result.token)
+                navigate('/home')
             }
+
+
+
+
+
 
 
 

@@ -4,6 +4,7 @@ const asyncHandler=require("express-async-handler")
 const User=require("../models/userModel")
 const bcrypt=require("bcrypt")
 const  jwt= require("jsonwebtoken")
+const jwtAuthentication = require('../middleware/jwtAuthentation');
 
 
 const userRegister=asyncHandler( async (req,res)=>{
@@ -54,21 +55,32 @@ const userLogin = asyncHandler( async (req,res)=>{
     }
     
     const correctPassword = await bcrypt.compare(password, userAvailable.password);
-    
+    const token = jwt.sign({
+            id:userAvailable._id,
+            username:userAvailable.username},
+             process.env.JWT_SECRET)
     if (!correctPassword) {
         res.status(401);
         throw new Error("Wrong Username or Password")
     }
       
-        res.status(201).json({message:"Login Successfull",username:userAvailable.username,id:userAvailable._id})
+        res.status(201).json({message:"Login Successfull",username:userAvailable.username,id:userAvailable._id,token:token})
       
 
     
 })
 
 const currentUser = asyncHandler( async (req,res)=>{
-      res.status(201).json({message:"Current User"})
-    console.log("current user")
-})
+          const userId = req.user.id;
+    const fullUser = await User.findById(userId).select('-password')
+
+    if (!fullUser) {
+        res.status(404);
+        throw new Error("User not found");
+    }
+
+    res.json(fullUser);
+});
+
 
 module.exports={userRegister,userLogin,currentUser}
