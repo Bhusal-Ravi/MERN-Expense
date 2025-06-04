@@ -32,7 +32,7 @@ function Register() {
             alert("Account Registered proceed to Login:", result.username)
             console.log(result)
             if (response.ok) {
-                navigate('/login')
+                navigate('/')
             }
         } catch (error) {
 
