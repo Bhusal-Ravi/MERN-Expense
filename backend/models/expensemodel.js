@@ -12,9 +12,10 @@ const expenseSchema= mongoose.Schema({
          type: String,
         required:[true,"Amount is Required"],
     },
-    category:{
-         type: String,
-        required:[true,"Category is Required"],
+    type: {
+        type: String,
+        enum: ["income", "expense"],
+        required: [true, "Type is required"],
     },
     note:{
          type: String,

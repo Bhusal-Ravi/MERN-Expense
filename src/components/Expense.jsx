@@ -22,6 +22,7 @@ function Expense({ onExpenseAdded }) {
                 console.log('Expense saved successfully:', result);
                 setBackendError('');
                 reset();
+
                 if (onExpenseAdded) {
                     onExpenseAdded();
 
@@ -41,7 +42,7 @@ function Expense({ onExpenseAdded }) {
     return (
         <div>
             <div className='flex flex-col items-center justify-center mt-10'>
-                <h1 className='text-xl font-bold mb-4'>Add Expense</h1>
+                <h1 className='text-xl font-bold mb-4'>Add Transaction </h1>
                 <form onSubmit={handleSubmit(onSubmit)} className="p-4 max-w-sm mx-auto flex flex-col">
 
                     <div className="mb-4">
@@ -56,12 +57,19 @@ function Expense({ onExpenseAdded }) {
 
 
                     <div className="mb-4">
-                        <label className="block mb-1">Category</label>
-                        <input
-                            {...register('category', { required: 'Category is required' })}
+                        <label className="block mb-1">Type</label>
+                        <select
+                            {...register('type', { required: 'Type is required' })}
                             className="w-full border px-3 py-2 rounded"
-                        />
-                        {errors.category && <p className="text-red-500 text-sm">{errors.category.message}</p>}
+                            defaultValue=""
+                        >
+                            <option value="" disabled>Select type</option>
+                            <option value="income">Income</option>
+                            <option value="expense">Expense</option>
+                        </select>
+                        {errors.type && (
+                            <p className="text-red-500 text-sm">{errors.type.message}</p>
+                        )}
                     </div>
 
 

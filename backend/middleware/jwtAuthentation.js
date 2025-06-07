@@ -11,6 +11,7 @@ async function jwtAuthentication (req,res,next){
 
     try{
         const user=jwt.verify(token,process.env.JWT_SECRET)
+        console.log("Jwt user verified")
         req.user=user
       next();
     } catch (err) {
