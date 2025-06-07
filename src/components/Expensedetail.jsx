@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import ExpenseCharts from './ExpenseCharts'
 
 function Expensedetail({ refreshTrigger }) {
     const [expenseStatus, setExpenseStatus] = useState(false)
@@ -65,8 +66,12 @@ function Expensedetail({ refreshTrigger }) {
 
     return (
         <div className="p-6 bg-gray-50 min-h-screen">
+
             <div className='flex justify-center items-center flex-col'>
                 <h1 className="text-2xl font-bold text-center mb-8 text-gray-800">Expense Details</h1>
+                {expense.length >0 &&
+                <ExpenseCharts  expense={expense}/>
+            }
                 <div className='flex flex-row justify-center items-center'>
                     <p className={`${result < 0 ? "bg-red-400 text-black font-semibold" : "bg-green-400 text-black font-semibold"} rounded-xl p-3 mb-5`}>NetBalance : {result > 0 && (<>+</>)}{result}$</p>
                     <select
