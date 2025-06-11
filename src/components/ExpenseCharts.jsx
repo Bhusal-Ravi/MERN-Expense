@@ -59,7 +59,7 @@ const ExpenseCharts = ({ expense = [] }) => {
 
   return (
     <div className="flex flex-col lg:flex-row gap-6 p-4 max-w-6xl mx-auto">
-      {/* Bar Chart - Income vs Expenses */}
+
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex-1">
         <div className="mb-6">
           <h3 className="text-lg font-semibold text-gray-800">Income vs Expenses</h3>
@@ -69,20 +69,20 @@ const ExpenseCharts = ({ expense = [] }) => {
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-              <XAxis 
+              <XAxis
                 dataKey="date"
                 tickLine={false}
                 axisLine={false}
                 tick={{ fontSize: 12, fill: '#6b7280' }}
                 tickMargin={10}
               />
-              <YAxis 
+              <YAxis
                 tickLine={false}
                 axisLine={false}
                 tick={{ fontSize: 12, fill: '#6b7280' }}
                 tickFormatter={(value) => `$${value.toLocaleString()}`}
               />
-              <Tooltip 
+              <Tooltip
                 contentStyle={{
                   background: '#ffffff',
                   border: '1px solid #e5e7eb',
@@ -91,20 +91,20 @@ const ExpenseCharts = ({ expense = [] }) => {
                 }}
                 formatter={(value) => [`$${value.toLocaleString()}`]}
               />
-              <Legend 
+              <Legend
                 iconType="circle"
                 iconSize={10}
                 wrapperStyle={{ paddingTop: '20px' }}
               />
-              <Bar 
-                dataKey="income" 
-                fill="#10b981" 
+              <Bar
+                dataKey="income"
+                fill="#10b981"
                 radius={[4, 4, 0, 0]}
                 name="Income"
               />
-              <Bar 
-                dataKey="expense" 
-                fill="#ef4444" 
+              <Bar
+                dataKey="expense"
+                fill="#ef4444"
                 radius={[4, 4, 0, 0]}
                 name="Expense"
               />
@@ -113,7 +113,7 @@ const ExpenseCharts = ({ expense = [] }) => {
         </div>
       </div>
 
-      {/* Pie Chart - Distribution */}
+
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex-1">
         <div className="mb-6">
           <h3 className="text-lg font-semibold text-gray-800">Income/Expense Ratio</h3>
@@ -135,7 +135,7 @@ const ExpenseCharts = ({ expense = [] }) => {
                 <Cell key="income" fill="#10b981" />
                 <Cell key="expense" fill="#ef4444" />
               </Pie>
-              <Tooltip 
+              <Tooltip
                 contentStyle={{
                   background: '#ffffff',
                   border: '1px solid #e5e7eb',
@@ -144,7 +144,7 @@ const ExpenseCharts = ({ expense = [] }) => {
                 }}
                 formatter={(value) => [`$${value.toLocaleString()}`]}
               />
-              <Legend 
+              <Legend
                 iconType="circle"
                 iconSize={10}
                 layout="vertical"

@@ -1,8 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import ExpenseCharts from './ExpenseCharts'
+import CsvConverter from './CsvConverter'
+import PdfConverter from './PdfConverter'
+
 
 function Expensedetail({ refreshTrigger }) {
     const [expenseStatus, setExpenseStatus] = useState(false)
+
     const [expense, setExpense] = useState([])
     const [income, setIncome] = useState([])
     const [outgoing, setOutgoing] = useState([])
@@ -12,6 +16,8 @@ function Expensedetail({ refreshTrigger }) {
     const [filter, setFilter] = useState('today');
     const [loading, setLoading] = useState(false);
     const [backendError, setBackendError] = useState('')
+    const chartRef = useRef();
+
 
 
     async function getExpense() {
@@ -28,6 +34,7 @@ function Expensedetail({ refreshTrigger }) {
 
             if (response.ok) {
                 setExpense(result)
+                console.log(result)
                 setExpenseStatus(true)
                 const In = result.filter((ex) => ex.type === 'income')
                 setIncome(In)
@@ -45,8 +52,11 @@ function Expensedetail({ refreshTrigger }) {
                 setResult(final)
 
 
+
+
             } else {
                 setExpenseStatus(false)
+                setExpense([])
                 setBackendError(result.message)
                 setResult(0)
             }
@@ -67,15 +77,16 @@ function Expensedetail({ refreshTrigger }) {
     return (
         <div className="p-6 bg-gray-50 min-h-screen">
 
-            <div className='flex justify-center items-center flex-col'>
+            <div className="flex flex-col justify-center items-center">
                 <h1 className="text-2xl font-bold text-center mb-8 text-gray-800">Expense Details</h1>
-                {expense.length >0 &&
-                <ExpenseCharts  expense={expense}/>
-            }
-                <div className='flex flex-row justify-center items-center'>
-                    <p className={`${result < 0 ? "bg-red-400 text-black font-semibold" : "bg-green-400 text-black font-semibold"} rounded-xl p-3 mb-5`}>NetBalance : {result > 0 && (<>+</>)}{result}$</p>
+
+                <div className="flex flex-row justify-center items-center space-x-4">
+                    <p className={`${result < 0 ? "bg-red-400" : "bg-green-400"} text-black font-semibold rounded-xl p-3 mb-5`}>
+                        NetBalance: {result > 0 && '+'}{result}$
+                    </p>
+
                     <select
-                        className="flex justify-center mb-6 space-x-2 flex-wrap ml-10"
+                        className="mb-5 p-2 rounded border border-gray-300"
                         value={filter}
                         onChange={handleFilter}
                     >
@@ -86,8 +97,27 @@ function Expensedetail({ refreshTrigger }) {
                         <option value="last_month">Last Month</option>
                         <option value="this_year">This Year</option>
                     </select>
+
+                    <CsvConverter expense={expense} />
+                    <PdfConverter expense={expense} incomeamount={incomeamount} outgoingamount={outgoingamount} netbalance={result} chartRef={chartRef} />
                 </div>
             </div>
+
+
+
+            {expense && (
+                <div
+                    ref={chartRef}
+                    style={{
+                        width: '100%',
+                        minHeight: '400px',
+                        backgroundColor: '#ffffff',
+                        padding: '20px'
+                    }}
+                >
+                    <ExpenseCharts expense={expense} />
+                </div>
+            )}
 
             {expenseStatus ? (
                 <div className="w-full md:max-w-6xl md:mx-auto flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-6">
