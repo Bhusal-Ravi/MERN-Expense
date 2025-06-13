@@ -1,12 +1,34 @@
-# React + Vite
+![image](https://github.com/user-attachments/assets/dded4869-c812-4c46-a2b9-ca57f9e1af49)  ![image](https://github.com/user-attachments/assets/9ad119b9-df4f-4f69-ac61-e1164cfc2db9)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![image](https://github.com/user-attachments/assets/1970e031-f33a-423a-9d98-e5006dea6041)
+![image](https://github.com/user-attachments/assets/192247fa-0bb8-4b2a-a5ff-d1f5290e6fbc)
+![image](https://github.com/user-attachments/assets/f9be4d91-51b4-40df-ad20-ce708d80fb54)
 
-Currently, two official plugins are available:
+MERN Expense Manager is a full-stack web application built with MongoDB, Express.js, React, and Node.js that allows users to track and manage their expenses efficiently. It supports adding, editing, deleting, and categorizing transactions with real-time updates and secure user authentication.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The MERN Expense Manager uses the MERN stack — MongoDB, Express.js, React, and Node.js — to provide a full-stack solution for managing personal finances:
 
-## Expanding the ESLint configuration
+Frontend (React):
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Responsive user interface for adding, editing, and deleting expenses.
+
+Displays a list of transactions, total balance, income, and expenses.
+
+Handles routing and state management.
+
+Backend (Node.js + Express):
+
+RESTful API to manage transaction data and user authentication.
+
+Connects to the MongoDB database and handles all CRUD operations securely.
+
+Database (MongoDB):
+
+Stores user accounts and expense records in a flexible, schema-based structure using Mongoose.
+
+Authentication (JWT + bcrypt):
+
+Secure login and signup system using JSON Web Tokens and password hashing.
+
+
+
