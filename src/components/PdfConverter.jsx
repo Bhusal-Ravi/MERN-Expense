@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { forwardRef, useImperativeHandle } from 'react';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { toPng } from 'html-to-image';
+import { FileText } from 'lucide-react';
 
-function PdfConverter({ expense, incomeamount, outgoingamount, netbalance, chartRef }) {
+const PdfConverter = forwardRef(({ expense, incomeamount, outgoingamount, netbalance, chartRef }, ref) => {
     const exportPDF = async () => {
         const doc = new jsPDF({
             orientation: 'portrait',
@@ -48,92 +49,111 @@ function PdfConverter({ expense, incomeamount, outgoingamount, netbalance, chart
         try {
             if (!chartRef.current) throw new Error('Chart reference is null');
 
-            const chartElements = chartRef.current.querySelectorAll('.recharts-wrapper');
-            if (chartElements.length === 0) throw new Error('No charts found');
+            // Get all recharts-wrapper elements
+            const chartContainers = chartRef.current.querySelectorAll('.recharts-wrapper');
+            
+            if (chartContainers.length >= 2) {
+                // First chart (Bar chart)
+                const barChartContainer = chartContainers[0];
+                const barChartImage = await toPng(barChartContainer, {
+                    quality: 1.0,
+                    pixelRatio: 3,
+                    backgroundColor: '#ffffff'
+                });
+                
+                // Calculate dimensions to maintain aspect ratio
+                const { width: barWidth, height: barHeight } = barChartContainer.getBoundingClientRect();
+                const barAspectRatio = barWidth / barHeight;
+                const maxWidth = 180;
+                const barChartHeight = maxWidth / barAspectRatio;
 
-            for (let i = 0; i < chartElements.length; i++) {
-                const chart = chartElements[i];
-                const { width, height } = chart.getBoundingClientRect();
-                const aspectRatio = width / height;
+                doc.addImage(barChartImage, 'PNG', 15, chartY, maxWidth, barChartHeight);
+                chartY += barChartHeight + 20;
 
-                const chartImage = await toPng(chart, {
+                // Second chart (Pie chart)
+                const pieChartContainer = chartContainers[1];
+                const pieChartImage = await toPng(pieChartContainer, {
+                    quality: 1.0,
                     pixelRatio: 3,
                     backgroundColor: '#ffffff'
                 });
 
-                const maxWidth = 180;
-                const chartHeight = maxWidth / aspectRatio;
+                // Calculate dimensions to maintain aspect ratio
+                const { width: pieWidth, height: pieHeight } = pieChartContainer.getBoundingClientRect();
+                const pieAspectRatio = pieWidth / pieHeight;
+                const pieChartHeight = maxWidth / pieAspectRatio;
 
-                // If chart would overflow the page height, go to next page
-                if (chartY + chartHeight > 270) {
+                // If chart would overflow the page, add a new page
+                if (chartY + pieChartHeight > 270) {
                     doc.addPage();
                     chartY = 20;
                 }
 
-                doc.addImage(chartImage, "PNG", 15, chartY, maxWidth, chartHeight);
-                chartY += chartHeight + 10;
+                doc.addImage(pieChartImage, 'PNG', 15, chartY, maxWidth, pieChartHeight);
+                chartY += pieChartHeight + 20;
+                
+            } else if (chartContainers.length === 1) {
+                // Only one chart available
+                const chartContainer = chartContainers[0];
+                const chartImage = await toPng(chartContainer, {
+                    quality: 1.0,
+                    pixelRatio: 3,
+                    backgroundColor: '#ffffff'
+                });
+                
+                const { width, height } = chartContainer.getBoundingClientRect();
+                const aspectRatio = width / height;
+                const maxWidth = 180;
+                const chartHeight = maxWidth / aspectRatio;
+
+                doc.addImage(chartImage, 'PNG', 15, chartY, maxWidth, chartHeight);
+                chartY += chartHeight + 20;
+            } else {
+                throw new Error('No chart containers found');
             }
+            
         } catch (error) {
-            console.error('Chart export error:', error);
+            console.error('Error exporting chart:', error);
             doc.setFontSize(12);
             doc.setTextColor(150, 150, 150);
             doc.text("Charts could not be exported", 105, chartY, { align: 'center' });
             chartY += 20;
         }
 
-        // Table data
-        const tableData = expense.map((e) => [
-            new Date(e.date).toLocaleDateString(),
-            e.type,
-            { content: `$${parseFloat(e.amount).toFixed(2)}`, styles: { halign: 'right' } },
-            e.note || "-"
+        // Expense table
+        const tableData = expense.map(item => [
+            item.type,
+            `$${item.amount}`,
+            new Date(item.date).toLocaleDateString(),
+            item.note
         ]);
 
         autoTable(doc, {
-            startY: chartY + 10,
-            head: [
-                [
-                    { content: 'Date', styles: { fillColor: [44, 62, 80], textColor: [255, 255, 255], fontStyle: 'bold' } },
-                    { content: 'Type', styles: { fillColor: [44, 62, 80], textColor: [255, 255, 255], fontStyle: 'bold' } },
-                    { content: 'Amount', styles: { fillColor: [44, 62, 80], textColor: [255, 255, 255], fontStyle: 'bold', halign: 'right' } },
-                    { content: 'Note', styles: { fillColor: [44, 62, 80], textColor: [255, 255, 255], fontStyle: 'bold' } }
-                ]
-            ],
+            startY: chartY,
+            head: [['Type', 'Amount', 'Date', 'Note']],
             body: tableData,
             theme: 'grid',
-            alternateRowStyles: {
-                fillColor: [236, 240, 241]
-            },
-            styles: {
-                cellPadding: 3,
-                fontSize: 10,
-                valign: 'middle'
-            },
-            columnStyles: {
-                2: { cellWidth: 'auto', halign: 'right' }
-            },
-            margin: { left: 15 }
+            headStyles: { fillColor: [44, 62, 80] },
+            styles: { fontSize: 10, cellPadding: 5 },
+            margin: { top: 10 }
         });
 
-        // Footer
-        const pageCount = doc.internal.getNumberOfPages();
-        for (let i = 1; i <= pageCount; i++) {
-            doc.setPage(i);
-            doc.setFontSize(8);
-            doc.setTextColor(150);
-            doc.text(`Page ${i} of ${pageCount}`, 105, 287, { align: 'center' });
-            doc.text("© Expense Manager", 195, 287, { align: 'right' });
-        }
-
-        doc.save(`Financial-Report-${new Date().toISOString().slice(0, 10)}.pdf`);
+        doc.save('financial-report.pdf');
     };
+
+    useImperativeHandle(ref, () => ({
+        exportPDF
+    }));
 
     return (
         <button
             onClick={exportPDF}
-            className="pdf-button hidden"
-        />
+            className="flex items-center gap-2 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg transition-colors duration-200"
+        >
+            <FileText className="w-4 h-4" />
+            <span>PDF</span>
+        </button>
     );
-}
+});
 
 export default PdfConverter;
