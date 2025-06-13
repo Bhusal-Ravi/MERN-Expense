@@ -22,7 +22,7 @@ const ExpenseCharts = ({ expense = [] }) => {
     );
   }
 
-  // Your existing data processing functions
+ 
   const processData = () => {
     const uniqueDates = new Set(expense.map(e => new Date(e.date).toLocaleDateString())).size;
     const groupByMonth = uniqueDates > 30;
