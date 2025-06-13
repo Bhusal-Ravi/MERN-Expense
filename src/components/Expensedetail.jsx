@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import ExpenseCharts from './ExpenseCharts'
 import CsvConverter from './CsvConverter'
 import PdfConverter from './PdfConverter'
-import { Download, FileText, Filter, DollarSign } from 'lucide-react'
+import { Download, FileText, Filter } from 'lucide-react'
 
 function Expensedetail({ refreshTrigger }) {
     const [expenseStatus, setExpenseStatus] = useState(false)
@@ -72,11 +72,8 @@ function Expensedetail({ refreshTrigger }) {
                 <h1 className="text-2xl font-bold text-center text-emerald-400">Expense Details</h1>
 
                 <div className="flex flex-col sm:flex-row justify-center items-center gap-4 w-full max-w-4xl">
-                    <div className="flex items-center gap-2 w-full sm:w-auto">
-                        <DollarSign className="w-5 h-5 text-emerald-400" />
-                        <div className={`${result < 0 ? "bg-red-500/20" : "bg-emerald-500/20"} text-white font-semibold rounded-xl p-4 flex-1`}>
-                            Net Balance: {result > 0 && '+'}{result}$
-                        </div>
+                    <div className={`${result < 0 ? "bg-red-500/20" : "bg-emerald-500/20"} text-white font-semibold rounded-xl p-4 w-full sm:w-auto`}>
+                        Net Balance: {result > 0 && '+'}{result}$
                     </div>
 
                     <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
@@ -97,20 +94,8 @@ function Expensedetail({ refreshTrigger }) {
                         </div>
 
                         <div className="flex gap-2">
-                            <button
-                                onClick={() => document.querySelector('.csv-link').click()}
-                                className="flex items-center gap-2 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg transition-colors duration-200"
-                            >
-                                <Download className="w-4 h-4" />
-                                <span>CSV</span>
-                            </button>
-                            <button
-                                onClick={() => document.querySelector('.pdf-button').click()}
-                                className="flex items-center gap-2 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg transition-colors duration-200"
-                            >
-                                <FileText className="w-4 h-4" />
-                                <span>PDF</span>
-                            </button>
+                            <CsvConverter expense={expense} />
+                            <PdfConverter expense={expense} incomeamount={incomeamount} outgoingamount={outgoingamount} netbalance={result} chartRef={chartRef} />
                         </div>
                     </div>
                 </div>
@@ -225,3 +210,4 @@ function Expensedetail({ refreshTrigger }) {
 }
 
 export default Expensedetail
+
