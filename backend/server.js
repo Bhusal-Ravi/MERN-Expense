@@ -7,7 +7,7 @@ const cors=require('cors');
 const path = require('path');
 
 app.use(cors({
-    origin: "https://mern-expense-pink.vercel.app/", 
+    origin: "https://mern-expense-pink.vercel.app", 
 }));
 
 
