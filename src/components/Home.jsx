@@ -12,7 +12,7 @@ function Home() {
     useEffect(() => {
         async function getUserProfile() {
             try {
-                const response = await fetch('http://localhost:5001/api/users/current', {
+                const response = await fetch('https://mern-expense-s15g.onrender.com/api/users/current', {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
