@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import Expense from './Expense';
 import Expensedetail from './Expensedetail';
+import Navbar from './Navbar';
+import UserContext from './context/context';
 
 function Home() {
-
     const [user, setUser] = useState(null)
     const [refreshExpenses, setRefreshExpenses] = useState(0)
-    const navigate = useNavigate();
+
     useEffect(() => {
         async function getUserProfile() {
             try {
@@ -34,31 +35,30 @@ function Home() {
         getUserProfile();
     }, []);
 
-    function handleLogout() {
-        localStorage.removeItem('token')
-        navigate('/')
-    }
-
     function handleExpenseAdded() {
         setRefreshExpenses(prev => prev + 1);
     }
 
-
     return (
-        <div>
-            <div className='p-5 flex flex-col justify-center items-center'>
-                <h1 className='flex justify-center font-bold text-xl'>User Info</h1>
-                <div className='m-2'>
-                    <p>CreatedAt: <span className='text-green-600'> {user?.createdAt}</span></p>
-                    <p>UpdatedAt: <span className='text-green-600'> {user?.updatedAt}</span></p>
-                    <p>UserName: <span className='text-green-600'> {user?.username}</span></p>
-                    <p>Id: <span className='text-green-600'> {user?._id}</span></p>
+        <UserContext.Provider value={user}>
+            <div className="min-h-screen bg-[#0f172a] relative overflow-hidden">
+                <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAzNGMwLTIuMjA5IDEuNzkxLTQgNC00czQgMS43OTEgNCA0LTEuNzkxIDQtNCA0LTQtMS43OTEtNC00eiIgZmlsbD0iIzEwYjk4MSIgZmlsbC1vcGFjaXR5PSIuMDUiLz48L2c+PC9zdmc+')] opacity-20"></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-slate-900/50 via-slate-800/50 to-slate-900/50"></div>
+                <div className="relative">
+                    <Navbar />
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                        <div className="space-y-8">
+                            <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl shadow-xl border border-slate-700/50">
+                                <Expense onExpenseAdded={handleExpenseAdded} />
+                            </div>
+                            <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl shadow-xl border border-slate-700/50">
+                                <Expensedetail refreshTrigger={refreshExpenses} />
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <button className='bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600' onClick={handleLogout}>Logout</button>
             </div>
-            <Expense onExpenseAdded={handleExpenseAdded} />
-            <Expensedetail refreshTrigger={refreshExpenses} />
-        </div>
+        </UserContext.Provider>
     )
 }
 

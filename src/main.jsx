@@ -7,6 +7,8 @@ import Home from './components/Home.jsx'
 import Login from './components/Login.jsx'
 import Register from './components/Register.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
+import Navbar from './components/Navbar.jsx'
+import './registerSW'
 
 const router = createBrowserRouter([
   {

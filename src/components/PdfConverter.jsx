@@ -131,10 +131,8 @@ function PdfConverter({ expense, incomeamount, outgoingamount, netbalance, chart
     return (
         <button
             onClick={exportPDF}
-            className="cursor-pointer px-4 mb-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors shadow-md"
-        >
-            Download PDF Report
-        </button>
+            className="pdf-button hidden"
+        />
     );
 }
 

@@ -4,10 +4,10 @@ const app = express()
 const errorHandler=require("./middleware/errorHandler")
 const connectDb = require("./config/dbConnection")
 const cors=require('cors');
+const path = require('path');
 
 app.use(cors({
     origin: "http://localhost:5173", 
-                 
 }));
 
 
