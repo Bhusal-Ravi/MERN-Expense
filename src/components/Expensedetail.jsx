@@ -19,7 +19,7 @@ function Expensedetail({ refreshTrigger }) {
 
     async function getExpense() {
         try {
-            const response = await fetch(`http://localhost:5001/api/users/getexpense?filter=${filter}`, {
+            const response = await fetch(`https://mern-expense-s15g.onrender.com/api/users/getexpense?filter=${filter}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
