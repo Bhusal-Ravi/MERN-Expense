@@ -8,7 +8,7 @@ function Expense({ onExpenseAdded }) {
 
     async function onSubmit(data) {
         try {
-            const response = await fetch('http://localhost:5001/api/users/registerexpense', {
+            const response = await fetch('https://mern-expense-s15g.onrender.com/api/users/registerexpense', {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
