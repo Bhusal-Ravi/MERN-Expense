@@ -1,6 +1,6 @@
-![image](https://github.com/user-attachments/assets/e64ea9d5-2433-40f3-9ab4-05c83b925a42)
-![image](https://github.com/user-attachments/assets/7b5a7a91-28d9-4426-9962-6fa0891ded91)
-
+![image](https://github.com/user-attachments/assets/1970e031-f33a-423a-9d98-e5006dea6041)
+![image](https://github.com/user-attachments/assets/192247fa-0bb8-4b2a-a5ff-d1f5290e6fbc)
+![image](https://github.com/user-attachments/assets/f9be4d91-51b4-40df-ad20-ce708d80fb54)
 
 # Mern Expense
 
@@ -49,13 +49,9 @@ cd ../backend
 
 npm run dev
 
-    
 
-![image](https://github.com/user-attachments/assets/1970e031-f33a-423a-9d98-e5006dea6041)
-![image](https://github.com/user-attachments/assets/192247fa-0bb8-4b2a-a5ff-d1f5290e6fbc)
-![image](https://github.com/user-attachments/assets/f9be4d91-51b4-40df-ad20-ce708d80fb54)
-
-
+![image](https://github.com/user-attachments/assets/e64ea9d5-2433-40f3-9ab4-05c83b925a42)
+![image](https://github.com/user-attachments/assets/7b5a7a91-28d9-4426-9962-6fa0891ded91)
 
 
 
