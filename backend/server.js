@@ -3,6 +3,7 @@ const dotenv= require("dotenv").config()
 const app = express()
 const errorHandler=require("./middleware/errorHandler")
 const connectDb = require("./config/dbConnection")
+const healthCheckRoute= require('./routes/healthcheck')
 const cors=require('cors');
 const path = require('path');
 
@@ -17,7 +18,7 @@ connectDb();
 app.use(express.json())
 app.use("/api/users",require("./routes/userRoutes"))
 app.use("/api/users",require("./routes/expenseRoutes"))
-app.use('/api/health',require('./routes/healthCheck'))
+app.use('/api',healthCheckRoute)
 app.use(errorHandler)
 
 
