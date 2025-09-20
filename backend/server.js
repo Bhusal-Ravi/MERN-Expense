@@ -17,6 +17,7 @@ connectDb();
 app.use(express.json())
 app.use("/api/users",require("./routes/userRoutes"))
 app.use("/api/users",require("./routes/expenseRoutes"))
+app.use('/api/health',require('./routes/healthCheck'))
 app.use(errorHandler)
 
 
