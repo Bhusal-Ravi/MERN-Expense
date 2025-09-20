@@ -3,7 +3,7 @@ const dotenv= require("dotenv").config()
 const app = express()
 const errorHandler=require("./middleware/errorHandler")
 const connectDb = require("./config/dbConnection")
-const healthCheckRoute= require('./routes/healthcheck')
+const healthCheckRoute= require('./routes/healthCheck')
 const cors=require('cors');
 const path = require('path');
 
